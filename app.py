@@ -6,7 +6,7 @@ import random
 app = Flask(__name__)
 # A secret key is required for Flask sessions to work.
 # In a real-world app, you would use a more complex, randomly generated key.
-app.secret_key = 'your_secret_key_here'
+app.secret_key = os.environ.get('SECRET_KEY')
 
 # Load quiz questions from the JSON file
 def load_questions():
@@ -112,3 +112,4 @@ if __name__ == '__main__':
             json.dump(sample_questions, file, indent=4)
             
     app.run(debug=True)
+ 
