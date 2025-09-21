@@ -1,19 +1,112 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Results</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results - Flask Quiz App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="container">
-<div class="results-container">
-<h2>Quiz Complete!</h2>
-<p>Your final score is: {{ score }} out of {{ total_questions }}</p>
-<a href="{{ url_for('index') }}" class="button">Play Again</a>
-</div>
-</div>
+    <div class="container fade-in">
+        <div class="results-container">
+            <h2>🎉 Quiz Complete!</h2>
+            
+            <!-- Score Summary -->
+            <div class="score-summary">
+                <h3>Your Results</h3>
+                <p><strong>Final Score:</strong> {{ score }} out of {{ total_questions }}</p>
+                <p><strong>Percentage:</strong> {{ percentage }}%</p>
+                <p class="performance-{{ performance_class }}">{{ performance_msg }}</p>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="{{ url_for('index') }}" class="button">Play Again</a>
+            </div>
+            
+            <!-- Answer Review Section -->
+            {% if answers %}
+                <div class="answer-review">
+                    <h3>Review Your Answers</h3>
+                    {% for answer in answers %}
+                        <div class="answer-item {% if answer.is_correct %}correct{% else %}incorrect{% endif %}">
+                            <div class="answer-question">
+                                {{ loop.index }}. {{ answer.question }}
+                            </div>
+                            <div class="answer-details">
+                                <p><strong>Your Answer:</strong> 
+                                    <span class="{% if answer.is_correct %}answer-correct{% else %}answer-incorrect{% endif %}">
+                                        {{ answer.user_answer }}
+                                    </span>
+                                </p>
+                                {% if not answer.is_correct %}
+                                    <p><strong>Correct Answer:</strong> 
+                                        <span class="answer-correct">{{ answer.correct_answer }}</span>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <!-- Statistics -->
+            <div class="quiz-stats">
+                <h4>Quiz Statistics</h4>
+                <p>✅ Correct Answers: {{ score }}</p>
+                <p>❌ Incorrect Answers: {{ total_questions - score }}</p>
+                <p>📊 Accuracy Rate: {{ percentage }}%</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add some celebration animation for high scores
+        if ({{ percentage }} >= 80) {
+            document.addEventListener('DOMContentLoaded', function() {
+                const container = document.querySelector('.container');
+                container.style.animation = 'celebration 1s ease-in-out';
+            });
+        }
+        
+        // Add keyboard shortcut to play again
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                window.location.href = "{{ url_for('index') }}";
+                e.preventDefault();
+            }
+        });
+    </script>
+    
+    <style>
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .score-summary {
+            background-color: #2a2a2c;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .action-buttons {
+            margin: 30px 0;
+        }
+        
+        .quiz-stats {
+            background-color: #1a1a1c;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+        
+        .quiz-stats h4 {
+            margin-top: 0;
+            color: #1e4a4d;
+        }
+    </style>
 </body>
 </html>
