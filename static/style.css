@@ -71,3 +71,188 @@ cursor: pointer;
 .results-container {
 text-align: center;
 }
+
+/* Flash Messages */
+.flash-messages {
+margin-bottom: 20px;
+}
+
+.flash-message {
+padding: 12px 20px;
+margin-bottom: 10px;
+border-radius: 8px;
+font-weight: 500;
+}
+
+.flash-message.error {
+background-color: #dc3545;
+color: white;
+border: 1px solid #dc3545;
+}
+
+.flash-message.warning {
+background-color: #ffc107;
+color: #212529;
+border: 1px solid #ffc107;
+}
+
+.flash-message.success {
+background-color: #28a745;
+color: white;
+border: 1px solid #28a745;
+}
+
+.flash-message.info {
+background-color: #17a2b8;
+color: white;
+border: 1px solid #17a2b8;
+}
+
+/* Progress Bar */
+.progress-container {
+margin-bottom: 20px;
+}
+
+.progress-bar {
+width: 100%;
+height: 8px;
+background-color: #333;
+border-radius: 4px;
+overflow: hidden;
+}
+
+.progress-fill {
+height: 100%;
+background-color: #1e4a4d;
+transition: width 0.3s ease;
+}
+
+.progress-text {
+font-size: 12px;
+color: #aaa;
+margin-top: 5px;
+}
+
+/* Performance Classes */
+.performance-excellent {
+color: #28a745;
+font-weight: bold;
+}
+
+.performance-good {
+color: #17a2b8;
+font-weight: bold;
+}
+
+.performance-average {
+color: #ffc107;
+font-weight: bold;
+}
+
+.performance-needs-improvement {
+color: #dc3545;
+font-weight: bold;
+}
+
+/* Error Container */
+.error-container {
+text-align: center;
+}
+
+.error-container h1 {
+color: #dc3545;
+font-size: 3em;
+margin-bottom: 20px;
+}
+
+.error-container p {
+margin-bottom: 15px;
+font-size: 18px;
+}
+
+/* Answer Review Styles */
+.answer-review {
+margin-top: 30px;
+text-align: left;
+}
+
+.answer-item {
+background-color: #2a2a2c;
+padding: 15px;
+margin-bottom: 15px;
+border-radius: 8px;
+border-left: 4px solid transparent;
+}
+
+.answer-item.correct {
+border-left-color: #28a745;
+}
+
+.answer-item.incorrect {
+border-left-color: #dc3545;
+}
+
+.answer-question {
+font-weight: bold;
+margin-bottom: 10px;
+color: #f5f5f5;
+}
+
+.answer-details {
+font-size: 14px;
+color: #ccc;
+}
+
+.answer-correct {
+color: #28a745;
+}
+
+.answer-incorrect {
+color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .option {
+        font-size: 16px;
+    }
+    
+    .button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.4em;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.loading .button {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

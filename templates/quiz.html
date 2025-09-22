@@ -1,27 +1,94 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Question {{ current_question_number }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="container">
-<div class="quiz-container">
-<div class="question-counter">Question {{ current_question_number }} of {{ total_questions }}</div>
-<h2>{{ question['question'] }}</h2>
-<form action="{{ url_for('quiz') }}" method="post">
-{% for option in question['options'] %}
-<div class="option">
-<input type="radio" id="{{ option }}" name="answer" value="{{ option }}" required>
-<label for="{{ option }}">{{ option }}</label>
-</div>
-{% endfor %}
-<button type="submit" class="button">Next Question</button>
-</form>
-</div>
-</div>
+    <div class="container fade-in">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="quiz-container">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ progress_percentage }}%;"></div>
+                </div>
+                <div class="progress-text">
+                    Progress: {{ progress_percentage }}% ({{ current_question_number }}/{{ total_questions }})
+                </div>
+            </div>
+            
+            <!-- Question Counter -->
+            <div class="question-counter">
+                Question {{ current_question_number }} of {{ total_questions }}
+            </div>
+            
+            <!-- Question -->
+            <h2>{{ question['question'] }}</h2>
+            
+            <!-- Answer Form -->
+            <form action="{{ url_for('quiz') }}" method="post" id="quizForm">
+                {% for option in question['options'] %}
+                    <div class="option">
+                        <input type="radio" id="{{ loop.index }}" name="answer" value="{{ option }}" required>
+                        <label for="{{ loop.index }}">{{ option }}</label>
+                    </div>
+                {% endfor %}
+                
+                <button type="submit" class="button" id="submitBtn">
+                    {% if current_question_number == total_questions %}
+                        Finish Quiz
+                    {% else %}
+                        Next Question
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const options = document.querySelectorAll('input[name="answer"]');
+            
+            // Number keys 1-4 to select options
+            if (e.key >= '1' && e.key <= '4') {
+                const index = parseInt(e.key) - 1;
+                if (options[index]) {
+                    options[index].checked = true;
+                }
+                e.preventDefault();
+            }
+            
+            // Enter key to submit
+            if (e.key === 'Enter') {
+                const selected = document.querySelector('input[name="answer"]:checked');
+                if (selected) {
+                    document.getElementById('quizForm').submit();
+                }
+                e.preventDefault();
+            }
+        });
+        
+        // Add loading state on form submission
+        document.getElementById('quizForm').addEventListener('submit', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = 'Loading...';
+            submitBtn.disabled = true;
+            document.querySelector('.container').classList.add('loading');
+        });
+    </script>
 </body>
 </html>
